@@ -1,0 +1,43 @@
+
+<div>
+
+<div class="row" style="padding:20px;">
+<device-widget ng-repeat="widget in Widgets track by $index" title={{widget.item}} number={{widget.count}} icon={{widget.fa}} color={{widget.widgetclass}}></device-widget>
+</div>
+
+<br>
+
+<div class="row">
+<div class="btn-group" role="group" aria-label="scorers group">
+    <button type="button" class="btn btn-info" ng-click="Categories('steady',5)">steady scorers</button>
+    <button type="button" class="btn btn-info" ng-click="Categories('changers',5)">high variance scorers</button>
+    <button type="button" class="btn btn-info" ng-click="Categories('top',5)">high scorers</button>
+    <button type="button" class="btn btn-info"ng-click="Categories('low',5)">low scorers</button>
+  </div>
+</div>
+
+<div class="row">
+  <input bs-switch id="AggregateCheckBox" type="checkbox" ng-model="isaggregated" switch-on-text="aggregated" switch-off-text="per site" switch-off-color="success" switch-on-color="info" switch-label="View " ng-change="refreshData()">
+  <ui-select multiple ng-model="sites.selected" theme="select2" ng-disabled="disabled" style="width: 600px;" on-select="refreshData()" on-remove="refreshData()" limit="10">
+    <ui-select-match placeholder="Select siteid to display (up to 10)">{{$item.name}}</ui-select-match>
+  <ui-select-choices repeat="site in sites.scored | filter:$select.search">
+    {{site.name}}
+  </ui-select-choices>
+</ui-select>
+<select class="btn btn-primary btn-lg" ng-model="component" ng-options="str for str in components" ng-change="refreshData()">
+</select>
+
+</div>
+
+<div class="row">
+<graph ng-show='sites.selected.length>0 ' go-Model="Scores" chart-Title="scoreType+' scores'" widget-Title="scoreType+ ' scores for the '+ sites.selected.length +' selected site(s)'" ></graph>
+<graph ng-show='sites.selected.length==0' go-Model="Scores" chart-Title="scoreType+' scores'" widget-Title="scoreType+ ' scores for the all '+sites.scored.length+' sites scored'" ></graph>
+
+<graph go-Model="ScoresMetrics" chart-Title="component +' score component'" widget-Title="scoreType+ ' score components (Sub-Score)'" ></graph>
+</div>
+
+<div ng-repeat="site in sites.selected track by $index">
+<graph go-Model="site.result" chart-Title="site.name +' scores'" widget-Title="scoreType+ ' scores for site '+site.name" ></graph>
+</div>
+
+</div>

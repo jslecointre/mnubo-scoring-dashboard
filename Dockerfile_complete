@@ -1,0 +1,24 @@
+FROM node:5
+
+RUN mkdir -p /src/app
+RUN mkdir -p /src/server
+RUN mkdir -p /src/dist
+
+WORKDIR /src
+# replace this with your application's default port
+ADD package.json .
+RUN npm install
+RUN npm install -g yo bower grunt-cli
+ADD bower.json .
+RUN bower --allow-root install
+RUN bower --allow-root install compass
+
+ADD app/ app
+ADD server/ server
+ADD dist/ dist
+ADD Gruntfile.js .
+
+WORKDIR /src/server
+EXPOSE 3000
+
+CMD npm start

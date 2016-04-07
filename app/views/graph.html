@@ -1,0 +1,10 @@
+<div class="col-lg-6 col-md-6 col-xs-6">
+  <rd-widget>
+    <rd-widget-header icon="fa-line-chart" title="{{widgetTitle}}">
+    </rd-widget-header>
+    <rd-widget-body>
+      <plotly ng-if="chartConfig.length > 0" data="chartConfig" layout="chartLayout"></plotly>
+      <rd-loading ng-if="chartConfig.length <= 0"></rd-loading>
+    </rd-widget-body>
+  </rd-widget>
+</div>
